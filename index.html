@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edzone Ateliera | Cinematic Video Editing</title>
+  <meta name="description"
+    content="Edzone Atelier is a post-production studio built for storytellers who refuse to compromise. Cinematic editing, colour grading, and motion graphics.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface2: #1a1a1a;
+      --border: #2a2a2a;
+      --gold: #c9a84c;
+      --gold-glow: rgba(201, 168, 76, 0.25);
+      --text: #f0ede6;
+      --muted: #888880;
+      --green: #25D366;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    section {
+      padding: 4rem 2rem;
+      min-height: 80vh;
+      scroll-margin-top: 100px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid rgba(201, 168, 76, 0.12);
+      margin: 4rem 0;
+      width: 100%;
+    }
+
+    .fade-section {
+      opacity: 0;
+      transform: translateY(60px) scale(0.95);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .fade-section.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Keep home fully visible on load */
+    #home.fade-section {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    h1,
+    h2,
+    h3,
+    .brand,
+    .stat-num,
+    .editor-name,
+    .video-title,
+    .overlay-link,
+    .stat-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-weight: normal;
+      margin: 0;
+    }
+
+    /* 1. NAVIGATION BAR */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 999;
+      background: transparent;
+      padding: 1.2rem 2rem;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s, backdrop-filter 0.3s;
+    }
+
+    nav.scrolled {
+      background: rgba(10, 10, 10, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .brand {
+      font-size: 1.6rem;
+      letter-spacing: 0.18em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-link {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    .nav-link:hover {
+      color: var(--gold);
+    }
+
+    .nav-link.active {
+      color: var(--gold);
+    }
+
+    .nav-link.active::after {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--gold);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    .hamburger .line {
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      transition: 0.3s;
+    }
+
+    .mobile-overlay {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 100%;
+      height: 100vh;
+      background: #0a0a0a;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      transition: transform 0.4s ease;
+    }
+
+    .mobile-overlay.open {
+      transform: translateX(-100%);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 1.2rem;
+      right: 2rem;
+      font-size: 2.5rem;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .overlay-link {
+      font-size: 3rem;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .overlay-link:hover {
+      color: var(--gold);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      nav {
+        padding: 1.2rem 1.5rem;
+      }
+    }
+
+    /* 2. HERO SECTION */
+    #home {
+      padding: 0;
+      min-height: 100vh;
+      position: relative;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    #reel-wrap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) perspective(900px) rotateX(70deg);
+      width: min(60vw, 420px);
+      height: min(60vw, 420px);
+      z-index: 1;
+    }
+
+    #reel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, #1c1c1c 30%, #111 60%, #0a0a0a 100%);
+      border: 3px solid #2a2a2a;
+      position: relative;
+      animation: spinReel 9s linear infinite;
+      box-sizing: border-box;
+    }
+
+    @keyframes spinReel {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .sprocket {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #0a0a0a;
+      border: 2px solid #333;
+      box-sizing: border-box;
+    }
+
+    .hub {
+      width: 22%;
+      height: 22%;
+      border-radius: 50%;
+      background: radial-gradient(circle, #2a2a2a, #111);
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 18px var(--gold-glow);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-sizing: border-box;
+    }
+
+    .film-frame {
+      position: absolute;
+      width: 36px;
+      height: 26px;
+      background: #0f0f0f;
+      border: 1px solid #333;
+      border-radius: 2px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .film-frame div {
+      width: 80%;
+      height: 80%;
+      background: #1a1a1a;
+      border-radius: 1px;
+    }
+
+    .cutting-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .cutting-line::before {
+      content: "";
+      width: 140%;
+      height: 2px;
+      background: var(--gold);
+      box-shadow: 0 0 14px var(--gold-glow);
+      position: absolute;
+      top: 0;
+      left: -20%;
+      transform-origin: left center;
+      transform: rotate(18deg) translateY(30vh);
+      clip-path: inset(0 100% 0 0);
+    }
+
+    .cutting-line.animate::before {
+      animation: cutWipe 1.2s ease 0.4s forwards;
+    }
+
+    @keyframes cutWipe {
+      from {
+        clip-path: inset(0 100% 0 0);
+      }
+
+      to {
+        clip-path: inset(0 0% 0 0);
+      }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .hero-content h1 {
+      font-size: clamp(3.2rem, 9vw, 7.5rem);
+      line-height: 1;
+      letter-spacing: 0.04em;
+      color: var(--text);
+    }
+
+    .hero-content p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin-top: 0.75rem;
+      margin-bottom: 0;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      margin-top: 1.8rem;
+      padding: 0.7rem 2rem;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: 0.25s;
+      text-decoration: none;
+    }
+
+    .cta-btn:hover {
+      background: var(--gold);
+      color: #000;
+    }
+
+    /* COMMON HEADINGS */
+    .section-heading {
+      font-size: 3.5rem;
+      color: var(--text);
+    }
+
+    .golden-line {
+      width: 60px;
+      height: 3px;
+      background: var(--gold);
+      margin: 0.5rem 0 2rem;
+    }
+
+    /* 3. WORKS SECTION & 4. ABOUT SECTION LAYOUT */
+    .bio p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem 1.75rem;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .stat-card .stat-val {
+      font-size: 2.2rem;
+      color: var(--gold);
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .meet-heading {
+      font-size: 2.2rem;
+      margin-top: 3.5rem;
+    }
+
+    .editors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .editor-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform 0.25s, border-color 0.25s;
+    }
+
+    .editor-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--gold);
+    }
+
+    .editor-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      background: #1a1a1a;
+      border: 2px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .editor-avatar span {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      color: var(--gold);
+    }
+
+    .editor-name {
+      font-size: 1.3rem;
+      color: var(--text);
+    }
+
+    .editor-role {
+      font-size: 0.82rem;
+      color: var(--gold);
+      margin-top: 2px;
+    }
+
+    .editor-bio {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    .works-subtext {
+      font-size: 1rem;
+      color: var(--muted);
+      margin-top: -1rem;
+      margin-bottom: 2rem;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+      gap: 1.5rem;
+    }
+
+    .video-card {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: border-color 0.25s, transform 0.25s;
+      background: #000;
+      aspect-ratio: 16/9;
+    }
+
+    .video-card:hover {
+      border-color: var(--gold);
+      transform: scale(1.02);
+    }
+
+    .video-card video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .video-title-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 0.6rem 1rem;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      color: var(--text);
+      letter-spacing: 0.06em;
+      pointer-events: none;
+    }
+
+    .works-note {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    /* 5. CONTACT SECTION */
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      align-items: stretch;
+      width: 100%;
+    }
+
+    .contact-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 1.25rem;
+    }
+
+    .contact-icon {
+      width: 8px;
+      height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    .contact-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .contact-value {
+      font-size: 0.95rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .whatsapp-btn {
+      padding: 0.75rem 1.75rem;
+      border-radius: 50px;
+      background: var(--green);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      transition: filter 0.25s, transform 0.25s;
+      margin-top: 1rem;
+    }
+
+    .whatsapp-btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+    }
+
+    .whatsapp-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: #fff;
+    }
+
+    .contact-form {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      font-size: 0.82rem;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.65rem 0.9rem;
+      border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--gold);
+      color: #000;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: filter 0.25s;
+    }
+
+    .submit-btn:hover {
+      filter: brightness(1.12);
+    }
+
+    .form-success {
+      text-align: center;
+      font-size: 1rem;
+      color: var(--gold);
+      padding: 2rem 0;
+      display: none;
+    }
+
+    /* 6. FOOTER */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 1.75rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-left {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .footer-right {
+      display: flex;
+    }
+
+    .footer-link {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 1.25rem;
+      transition: color 0.3s;
+    }
+
+    .footer-link:hover {
+      color: var(--gold);
+    }
+
+    @media (max-width: 480px) {
+      footer {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .footer-right {
+        margin-top: 0.5rem;
+      }
+
+      .footer-link {
+        margin: 0 0.6rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 1. NAVIGATION BAR -->
+  <nav id="navbar">
+    <a href="#home" class="brand">Edzone Atelier</a>
+    <div class="nav-links">
+      <a href="#home" class="nav-link active">Home</a>
+      <a href="#works" class="nav-link">Works</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#contact" class="nav-link">Contact Us</a>
+    </div>
+    <div class="hamburger" id="hamburger">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+  </nav>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" id="mobile-overlay">
+    <div class="close-btn" id="close-btn">&times;</div>
+    <a href="#home" class="overlay-link">Home</a>
+    <a href="#works" class="overlay-link">Works</a>
+    <a href="#about" class="overlay-link">About</a>
+    <a href="#contact" class="overlay-link">Contact Us</a>
+  </div>
+
+  <!-- 2. HERO SECTION -->
+  <section id="home" class="hero fade-section visible">
+    <div class="cutting-line"></div>
+    <div id="reel-wrap">
+      <div id="reel">
+        <div class="hub"></div>
+      </div>
+    </div>
+    <div class="hero-content">
+      <h1>WE EDIT. YOU SHINE.</h1>
+      <p>Cinematic editing for filmmakers who mean it.</p>
+      <a href="#works" class="cta-btn">See Our Work</a>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 3. WORKS SECTION -->
+  <!-- (Placed here to match Nav Order: Home, Works, About, Contact) -->
+  <section id="works" class="fade-section">
+    <div class="container">
+      <h2 class="section-heading">OUR WORK</h2>
+      <div class="golden-line"></div>
+      <p class="works-subtext">A selection of our edited projects.</p>
+
+      <div class="video-grid">
+        <!-- Card 1 -->
+        <div class="video-card">
+          <!-- TODO: Replace src with your video file path e.g. /videos/project1.mp4 and poster -->
+          <video controls playsinline webkit-playsinline preload="metadata" src="WhatsApp Video 2026-04-21 at 11.08.59 PM.mp4" poster=""></video>
+          <div class="video-title-overlay">PROJECT TITLE ONE</div>
+        </div>
+        <!-- Card 2 -->
+        <div class="video-card">
+          <!-- TODO: Replace src with your video file path e.g. /videos/project2.mp4 and poster -->
+          <video controls playsinline webkit-playsinline preload="metadata" src="WhatsApp Video 2026-04-21 at 11.18.09 PM.mp4" poster=""></video>
+          <div class="video-title-overlay">PROJECT TITLE TWO</div>
+        </div>
+        <!-- Card 3 -->
+        <div class="video-card">
+          <!-- TODO: Replace src with your video file path e.g. /videos/project3.mp4 and poster -->
+          <video controls playsinline webkit-playsinline preload="metadata" src="C:\Users\V.S.BARATH\Desktop\New folder (3)\WhatsApp Video 2026-04-21 at 11.23.10 PM.mp4" poster=""></video>
+          <div class="video-title-overlay">PROJECT TITLE THREE</div>
+        </div>
+        <!-- TODO: add more as needed -->
+      </div>
+
+      <p class="works-note">Place your video files in a /videos folder and update each src attribute above.</p>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 4. ABOUT SECTION -->
+  <section id="about" class="fade-section">
+    <div class="container">
+      <h2 class="section-heading">Edzone Atelier</h2>
+      <div class="golden-line"></div>
+
+      <div class="bio">
+        <!-- TODO: Replace with real company bio -->
+        <p>Edzone Atelier is a post-production studio built for storytellers who refuse to compromise. We bring raw footage
+          to life &mdash; colour, cut, and crafted with cinematic precision.</p>
+        <p>Founded by editors who grew up watching films frame by frame, we believe every edit is a creative decision.
+          Our work spans short films, music videos, brand campaigns, and documentary content.</p>
+      </div>
+
+      <div class="stats-row">
+        <!-- Card 1 -->
+        <div class="stat-card">
+          <!-- TODO: update year -->
+          <div class="stat-val">Est. 2025</div>
+          <div class="stat-label">Founded</div>
+        </div>
+        <!-- Card 2 -->
+        <div class="stat-card">
+          <!-- TODO: update location -->
+          <div class="stat-val">Salem, IN</div>
+          <div class="stat-label">Based In</div>
+        </div>
+        <!-- Card 3 -->
+        <div class="stat-card">
+          <!-- TODO: update count -->
+          <div class="stat-val">10+</div>
+          <div class="stat-label">Projects Delivered</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 5. CONTACT SECTION -->
+  <section id="contact" class="fade-section">
+    <div class="container">
+      <h2 class="section-heading">GET IN TOUCH</h2>
+      <div class="golden-line"></div>
+
+      <div class="contact-wrapper">
+        <!-- WhatsApp -->
+        <a href="https://wa.me/919150947307?text=Hello%20I%20want%20to%20contact%20you" target="_blank" 
+           style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:15px; text-decoration:none; color:var(--text); transition:transform 0.3s, border-color 0.3s; padding:3rem 2rem; background:var(--surface); border:1px solid var(--border); border-radius:12px; width:100%; box-sizing: border-box;"
+           onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#25D366';"
+           onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)';">
+          <svg viewBox="0 0 24 24" style="width:60px; height:60px; fill:#25D366;">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+          </svg>
+          <span style="font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:0.04em;">WhatsApp</span>
+          <span style="font-size:0.95rem; color:var(--muted); font-family:'DM Sans',sans-serif;">+91 9150947307</span>
+        </a>
+
+        <!-- Instagram -->
+        <a href="https://www.instagram.com/a_j_a_y_.v/" target="_blank" 
+           style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:15px; text-decoration:none; color:var(--text); transition:transform 0.3s, border-color 0.3s; padding:3rem 2rem; background:var(--surface); border:1px solid var(--border); border-radius:12px; width:100%; box-sizing: border-box;"
+           onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#E1306C';"
+           onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)';">
+          <svg viewBox="0 0 24 24" style="width:60px; height:60px; fill:#E1306C;">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+          </svg>
+          <span style="font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:0.04em;">Instagram</span>
+          <span style="font-size:0.95rem; color:var(--muted); font-family:'DM Sans',sans-serif;">@a_j_a_Y_.v</span>
+        </a>
+
+        <!-- Phone -->
+        <a href="tel:+919150947307" 
+           style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:15px; text-decoration:none; color:var(--text); transition:transform 0.3s, border-color 0.3s; padding:3rem 2rem; background:var(--surface); border:1px solid var(--border); border-radius:12px; width:100%; box-sizing: border-box;"
+           onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--gold)';"
+           onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)';">
+          <svg viewBox="0 0 24 24" style="width:60px; height:60px; fill:var(--gold);">
+            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+          </svg>
+          <span style="font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:0.04em;">Call Us</span>
+          <span style="font-size:0.95rem; color:var(--muted); font-family:'DM Sans',sans-serif;">Mon-Sat, 10am-7pm</span>
+        </a>
+
+        <!-- Location -->
+        <div style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:15px; text-decoration:none; color:var(--text); transition:transform 0.3s, border-color 0.3s; padding:3rem 2rem; background:var(--surface); border:1px solid var(--border); border-radius:12px; width:100%; box-sizing: border-box;"
+             onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--gold)';"
+             onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)';">
+          <svg viewBox="0 0 24 24" style="width:60px; height:60px; fill:var(--gold);">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+          </svg>
+          <span style="font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:0.04em;">Location</span>
+          <span style="font-size:0.95rem; color:var(--muted); font-family:'DM Sans',sans-serif;">Salem, Tamil Nadu</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. FOOTER -->
+  <footer>
+    <div class="footer-left">
+      &copy; 2025 Edzone Atelier. All rights reserved.
+    </div>
+    <div class="footer-right">
+      <!-- TODO: replace hrefs -->
+      <a href="https://www.instagram.com/a_j_a_y_.v/" target="_blank" class="footer-link">Instagram</a>
+    <a href="https://wa.me/919150947307?text=Hello%20I%20want%20to%20contact%20you"
+   target="_blank"
+   class="footer-link">
+   WhatsApp
+</a>
+    </div>
+  </footer>
+
+  <!-- 7. JAVASCRIPT -->
+  <script>
+    // 1. REEL BUILDER
+    document.addEventListener("DOMContentLoaded", () => {
+      const reel = document.getElementById("reel");
+
+      // sprockets: radius 44%, 12 holes
+      for (let i = 0; i < 12; i++) {
+        let angle = (i * 30) * Math.PI / 180;
+        let sprocket = document.createElement("div");
+        sprocket.className = "sprocket";
+
+        let left = 50 + Math.cos(angle) * 44;
+        let top = 50 + Math.sin(angle) * 44;
+
+        // Offset by half of 28px width/height (14px)
+        sprocket.style.left = `calc(${left}% - 14px)`;
+        sprocket.style.top = `calc(${top}% - 14px)`;
+        reel.appendChild(sprocket);
+      }
+
+      // film frames: radius 70%, 8 frames
+      for (let i = 0; i < 8; i++) {
+        let angle = (i * 45) * Math.PI / 180;
+        let frame = document.createElement("div");
+        frame.className = "film-frame";
+
+        let left = 50 + Math.cos(angle) * 70;
+        let top = 50 + Math.sin(angle) * 70;
+
+        // Offset by half of 36x26 (18px, 13px)
+        frame.style.left = `calc(${left}% - 18px)`;
+        frame.style.top = `calc(${top}% - 13px)`;
+        frame.style.transform = `rotate(${i * 45 + 90}deg)`;
+
+        let innerDiv = document.createElement("div");
+        frame.appendChild(innerDiv);
+        reel.appendChild(frame);
+      }
+    });
+
+    // 2. NAVBAR SCROLL
+    const navbar = document.getElementById("navbar");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add("scrolled");
+      } else {
+        navbar.classList.remove("scrolled");
+      }
+    });
+
+    // 3. MOBILE MENU
+    const hamburger = document.getElementById("hamburger");
+    const mobileOverlay = document.getElementById("mobile-overlay");
+    const closeBtn = document.getElementById("close-btn");
+    const overlayLinks = document.querySelectorAll(".overlay-link");
+
+    hamburger.addEventListener("click", () => {
+      mobileOverlay.classList.add("open");
+    });
+
+    const closeMenu = () => {
+      mobileOverlay.classList.remove("open");
+    };
+
+    closeBtn.addEventListener("click", closeMenu);
+
+    overlayLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        closeMenu();
+      });
+    });
+
+    // 4. ACTIVE NAV LINK & 5. SECTION FADE-IN
+    const sections = document.querySelectorAll("section");
+    const navLinksList = document.querySelectorAll(".nav-link");
+
+    // Fade-in observer
+    const fadeObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    // Active link observer
+    const activeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          let currentId = entry.target.getAttribute("id");
+          navLinksList.forEach(link => {
+            link.classList.remove("active");
+            if (link.getAttribute("href") === `#${currentId}`) {
+              link.classList.add("active");
+            }
+          });
+        }
+      });
+    }, { threshold: 0.4 });
+
+    sections.forEach(sec => {
+      // Home section is already visible, fade others
+      if (sec.id !== 'home') {
+        fadeObserver.observe(sec);
+      }
+      activeObserver.observe(sec);
+    });
+
+    // 6. FORM SUBMIT SECTION REMOVED
+
+    // 7. CUTTING LINE ANIMATION
+    window.addEventListener("load", () => {
+      const line = document.querySelector(".cutting-line");
+      if (line) {
+        line.classList.add("animate");
+      }
+    });
+  </script>
+</body>
+
+</html>
